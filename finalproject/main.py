@@ -53,6 +53,13 @@ def drawState(state):
     return ""
 def checkifnew(letters):
     a = input()
+    if a == '':
+        print("you should give us a non-empty letter")
+        return checkifnew(letters)
+    if len(a)>1:
+        print("you should just input one letter")
+        return checkifnew(letters)
+
     if a in letters:
         print(f"you have already tried letter {a}, try again")
         return checkifnew(letters)
@@ -90,6 +97,11 @@ def hangman():
                 found = True
         if not found:
             lives -= 1
-
+    print('you lose, do you want to try again? Y/N')
+    a = input().lower()
+    if a == 'y':
+        return hangman()
+    else:
+        return
 
 hangman()
