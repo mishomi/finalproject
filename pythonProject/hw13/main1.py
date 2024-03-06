@@ -1,17 +1,23 @@
-def addit(a,b):
-    return a+b
+class BankAccount:
+    def __init__(self, account_number, account_holder, balance):
+        self.account_number = account_number
+        self.account_holder = account_holder
+        self.balance = balance
 
-with open ("example.txt", 'w') as file:
-    file.write("ahdvahfajbfiaufafaf"
-               "akjfaoipfjafnakjfn"
-               "afksbaskjfasfasf"
-               "akfhasfhaskjf")
-with open ("example.txt", 'r') as file:
-    x = file.read()
-with open ("example1.txt", 'w') as file:
-    file.write("13214263431"
-               "1`24363124345"
-               "1235463124354")
-with open ("example1.txt", 'r') as file:
-    y = file.read()
-print(addit(x,y))
+    def deposit(self, amount):
+        self.balance += amount
+        print(f"Deposit of {amount} completed. Current balance is {self.balance}.")
+
+    def withdraw(self, amount):
+        if amount <= self.balance:
+            self.balance -= amount
+            print(f"Withdrawal of {amount} completed. Current balance is {self.balance}.")
+        else:
+            print("Insufficient funds.")
+
+account1 = BankAccount("123456", "John Doe", 1000)
+account2 = BankAccount("789012", "Jane Smith", 500)
+
+account1.deposit(500)
+account2.withdraw(200)
+account1.withdraw(2000)
