@@ -1,3 +1,5 @@
+import random
+
 def drawState(state):
     if state == 0:
         print('   -----')
@@ -48,13 +50,46 @@ def drawState(state):
         print('   |  /|\ ')
         print('   |  / \ ')
         print("   |")
-    return ''
+    return ""
+def checkifnew(letters):
+    a = input()
+    if a in letters:
+        print(f"you have already tried letter {a}, try again")
+        return checkifnew(letters)
+    else:
+        letters.append(a)
+        return letters
+
 def hangman():
-    print(drawState(0))
-    print(drawState(1))
-    print(drawState(2))
-    print(drawState(3))
-    print(drawState(4))
-    print(drawState(5))
-    print(drawState(6))
+    lives = 6
+    random_word = ''
+    with open('words.txt', 'r') as text:
+        words = text.readlines()
+        random_word = random.choice(words).strip()
+    random_decoded = ''
+    for i in random_word:
+        random_decoded += '_'
+    letters = []
+    while lives > 0:
+        print(drawState(6-lives))
+        print(random_decoded)
+        if random_word == random_decoded:
+            print('congratulations, you won, do you want to try again? Y/N')
+            a = input().lower()
+            if a == 'y':
+                return hangman()
+            else:
+                return
+        print(f"you have {lives} lives, guess the letter")
+        letters = checkifnew(letters)
+        letter = letters[-1]
+        found = False
+        for i in range(len(random_word)):
+            if random_word[i] == letter:
+                random_decoded = random_decoded[:i] + letter + random_decoded[i+1:]
+                found = True
+        if not found:
+            lives -= 1
+
+
 hangman()
