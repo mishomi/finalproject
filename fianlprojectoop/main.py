@@ -3,6 +3,7 @@ class Book:
         self.title = title
         self.author = author
         self.release_year = release_year
+
 class BookManager:
     def __init__(self):
         self.books = []
@@ -15,11 +16,12 @@ class BookManager:
             print('title: ', book.title, '\nauthor: ', book.author, '\nrelease year: ', book.release_year)
 
     def search_book(self, title):
+        found_books = []
         for book in self.books:
-            if book.title == title:
-                print('title: ', book.title, '\nauthor: ', book.author, '\nrelease year: ', book.release_year)
-                return
-        return
+            if title.lower() in book.title.lower():  # case-insensitive partial match
+                found_books.append(book)
+        return found_books
+
 def main():
     book_manager = BookManager()
     while True:
@@ -32,7 +34,13 @@ def main():
         if choice == "1":
             title = input("Enter book title: ")
             author = input("Enter author name: ")
-            year = input("Enter publication year: ")
+            while True:
+                year = input("Enter publication year: ")
+                if year.isdigit():
+                    year = int(year)
+                    break
+                else:
+                    print("Please enter a valid year (as a number).")
             new_book = Book(title, author, year)
             book_manager.add_book(new_book)
             print("Book added successfully!")
@@ -44,10 +52,11 @@ def main():
 
         elif choice == "3":
             title = input("Enter the title of the book you want to search for: ")
-            found_book = book_manager.search_book(title)
-            if found_book:
-                print("Book found:")
-                print(found_book)
+            found_books = book_manager.search_book(title)
+            if found_books:
+                print("Books found:")
+                for book in found_books:
+                    print('title: ', book.title, '\nauthor: ', book.author, '\nrelease year: ', book.release_year)
             else:
                 print("Book not found.")
 
