@@ -1,5 +1,4 @@
 import json
-
 class Book:
     def __init__(self, title, author, release_year):
         self.title = title
@@ -11,18 +10,18 @@ class BookManager:
         self.books = []
         self.load_books()
 
-    def load_books(self):
+    def load_books(self): #used to load every book from bookdata.json onto our list books to be used in the following functions
         try:
             with open('bookdata.json', 'r') as f:
                 self.books = json.load(f)
-        except FileNotFoundError:
+        except FileNotFoundError: # in case there is an error and we cant find our json file
             self.books = []
 
-    def save_books(self):
+    def save_books(self): # load every book back onto our json file
         with open('bookdata.json', 'w') as f:
             json.dump(self.books, f, indent=4)
 
-    def add_book(self, book):
+    def add_book(self, book): # we check if we have a book with  given author, name and date in our books list
         for existing_book in self.books:
             if (existing_book['title'] == book.title and existing_book['author'] == book.author and existing_book['release_year'] == book.release_year):
                 return False
@@ -34,7 +33,7 @@ class BookManager:
         for book in self.books:
             print('\ntitle: ', book['title'], '\nauthor: ', book['author'], '\nrelease year: ', book['release_year'])
 
-    def search_book(self, title):
+    def search_book(self, title):# by checking using lower() function, we make sure our search is not case sensitive
         found_books = []
         for book in self.books:
             if title.lower() in book['title'].lower():
@@ -50,18 +49,18 @@ def main():
         print("4. Exit")
         choice = input("Enter your choice: ")
 
-        if choice == "1":
+        if choice == "1": # we add the book if it is not already on the list, as previously mentioned
             title = input("Enter book title: ")
             author = input("Enter author name: ")
             while True:
                 year = input("Enter publication year: ")
-                if year.isdigit():
+                if year.isdigit():#check if we were given proper date
                     year = int(year)
                     break
                 else:
                     print("Please enter a valid year (as a number).")
             new_book = Book(title, author, year)
-            if book_manager.add_book(new_book):
+            if book_manager.add_book(new_book): #check if book is already on our list
                 print("Book added successfully!")
             else:
                 print("Book already in the database")
@@ -76,6 +75,7 @@ def main():
                 print("Books found:")
                 for book in found_books:
                     print('title: ', book['title'], '\nauthor: ', book['author'], '\nrelease year: ', book['release_year'])
+                print("------------------")
             else:
                 print("Book not found.")
         elif choice == "4":
